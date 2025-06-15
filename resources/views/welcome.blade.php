@@ -4,17 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Nexakun - Jual Beli Akun Game</title> <link rel="preconnect" href="https://fonts.bunny.net">
+    <title>Nexakun - Jual Beli Akun Game</title>
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    {{-- Anda mungkin perlu mendefinisikan warna custom ini di tailwind.config.js --}}
     <style>
         :root {
-            --custom-blue: #1E40AF; /* Contoh warna biru */
+            --custom-blue: #1E40AF; /* Contoh warna biru, sesuaikan dengan tema Anda */
         }
         .bg-custom-blue {
             background-color: var(--custom-blue);
@@ -23,15 +24,18 @@
 </head>
 <body class="font-sans antialiased">
 
-    {{-- Kontainer utama untuk mengatur warna latar belakang --}}
-    <div class="bg-gray-50 dark:bg-black">
+    {{-- Wrapper utama dengan state Alpine.js untuk mengontrol semua modal --}}
+    <div class="bg-gray-50 dark:bg-black" x-data="{ isLoginModalOpen: false, isRegisterModalOpen: false }" @keydown.escape.window="isLoginModalOpen = false; isRegisterModalOpen = false">
 
-        {{-- 1. Komponen Navbar --}}
-        {{-- Pastikan file resources/views/components/navbar.blade.php sudah ada --}}
+        {{-- Memanggil Komponen Navbar --}}
         <x-navbar />
+        
+        {{-- Memanggil Komponen Modal (akan tersembunyi secara default) --}}
+        <x-login-modal />
+        <x-register-modal />
 
-        {{-- 2. Konten Utama: Bagian Game Populer --}}
         <main>
+            {{-- Bagian Konten "Game Populer" --}}
             <div class="bg-gray-100 dark:bg-gray-900 py-12">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
@@ -97,10 +101,9 @@
                     </div>
                 </div>
             </div>
-            {{-- Anda bisa menambahkan section atau konten lain di sini --}}
         </main>
 
-        {{-- 3. Footer --}}
+        {{-- Footer --}}
         <footer class="py-8 text-center text-sm text-black dark:text-white/70">
             Nexakun &copy; {{ date('Y') }} - Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
         </footer>
