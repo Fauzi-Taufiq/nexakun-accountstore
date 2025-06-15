@@ -105,7 +105,7 @@
 
         {{-- Footer --}}
         <footer class="py-8 text-center text-sm text-black dark:text-white/70">
-            Nexakun &copy; {{ date('Y') }} - Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+            Copyrigt &copy; {{ date('Y') }} Nexakun. All rights reserved.
         </footer>
 
     </div>
