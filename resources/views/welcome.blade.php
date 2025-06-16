@@ -3,19 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Nexakun - Jual Beli Akun Game</title>
+
+    {{-- BARU: Menambahkan ikon website (favicon) --}}
+    {{-- Pastikan kamu memiliki file 'logo.png' di dalam folder 'public/images/' --}}
+    {{-- atau sesuaikan path-nya dengan lokasi file ikon-mu. --}}
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-noteks.png') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <style>
         :root {
-            --custom-blue: #1E40AF; /* Contoh warna biru, sesuaikan dengan tema Anda */
+            --custom-blue: #1E40AF;
         }
         .bg-custom-blue {
             background-color: var(--custom-blue);
@@ -24,90 +29,99 @@
 </head>
 <body class="font-sans antialiased">
 
-    {{-- Wrapper utama dengan state Alpine.js untuk mengontrol semua modal --}}
     <div class="bg-gray-50 dark:bg-black" x-data="{ isLoginModalOpen: false, isRegisterModalOpen: false }" @keydown.escape.window="isLoginModalOpen = false; isRegisterModalOpen = false">
 
-        {{-- Memanggil Komponen Navbar --}}
         <x-navbar />
-        
-        {{-- Memanggil Komponen Modal (akan tersembunyi secara default) --}}
         <x-login-modal />
         <x-register-modal />
 
         <main>
-            {{-- Bagian Konten "Game Populer" --}}
-            <div class="bg-gray-100 dark:bg-gray-900 py-12">
+            <div class="bg-white dark:bg-black py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
                     <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                        <h2 data-aos="fade-up" class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                             Game Populer
                         </h2>
-                        <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400">
-                            Temukan akun untuk game-game yang paling banyak dimainkan saat ini.
+                        <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400">
+                            Temukan kategori game yang paling banyak dicari saat ini.
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
-                        {{-- Kartu Game 1 --}}
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <img class="h-48 w-full object-cover" src="https://placehold.co/400x300/E74C3C/FFFFFF?text=Valorant" alt="Cover Game Valorant">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Valorant</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Akun dengan berbagai skin dan rank. Siap untuk push rank!</p>
-                                <a href="#" class="w-full text-center inline-block bg-custom-blue text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors">
-                                    Lihat Akun
-                                </a>
-                            </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                        {{-- Kartu Kategori Game dengan animasi dan delay berbeda --}}
+                        <div data-aos="fade-up" data-aos-delay="300" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Valorant</h3>
                         </div>
-
-                        {{-- Kartu Game 2 --}}
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <img class="h-48 w-full object-cover" src="https://placehold.co/400x300/3498DB/FFFFFF?text=Genshin+Impact" alt="Cover Game Genshin Impact">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Genshin Impact</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Akun AR tinggi dengan karakter bintang 5 limited. Jelajahi Teyvat!</p>
-                                <a href="#" class="w-full text-center inline-block bg-custom-blue text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors">
-                                    Lihat Akun
-                                </a>
-                            </div>
+                        <div data-aos="fade-up" data-aos-delay="400" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Genshin Impact</h3>
                         </div>
-
-                        {{-- Kartu Game 3 --}}
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <img class="h-48 w-full object-cover" src="https://placehold.co/400x300/2ECC71/FFFFFF?text=Mobile+Legends" alt="Cover Game Mobile Legends">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Mobile Legends</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Akun Mythic Glory dengan puluhan skin epic dan kolektor.</p>
-                                <a href="#" class="w-full text-center inline-block bg-custom-blue text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors">
-                                    Lihat Akun
-                                </a>
-                            </div>
+                        <div data-aos="fade-up" data-aos-delay="500" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Mobile Legends</h3>
                         </div>
-
-                        {{-- Kartu Game 4 --}}
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <img class="h-48 w-full object-cover" src="https://placehold.co/400x300/F1C40F/FFFFFF?text=PUBG+Mobile" alt="Cover Game PUBG Mobile">
-                            <div class="p-6">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">PUBG Mobile</h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Akun conqueror dengan outfit Mytic dan skin senjata upgrade.</p>
-                                <a href="#" class="w-full text-center inline-block bg-custom-blue text-white font-bold py-2 px-4 rounded hover:bg-opacity-90 transition-colors">
-                                    Lihat Akun
-                                </a>
-                            </div>
+                        <div data-aos="fade-up" data-aos-delay="600" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Honkai Star Rail</h3>
                         </div>
-                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 dark:bg-gray-900 py-16">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-left mb-12">
+                        <h2 data-aos="fade-up" class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+                            Akun Terbaru
+                        </h2>
+                        <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl text-lg text-gray-500 dark:text-gray-400">
+                            Pilih akun yang baru saja ditambahkan dan siap untuk kamu mainkan.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        @foreach ($accounts as $account)
+                            {{-- Animasi dengan delay yang dihitung otomatis berdasarkan urutan --}}
+                            <div data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4 + 1) * 100 }}" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:-translate-y-2">
+                                <a href="#">
+                                    <img class="h-48 w-full object-cover" src="{{ $account['image'] }}" alt="Gambar {{ $account['title'] }}">
+                                </a>
+                                <div class="p-6">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $account['category'] }}</p>
+                                    
+                                    {{-- DIUBAH: Ukuran judul dari text-lg menjadi text-base --}}
+                                    <h3 class="mt-1 text-base font-bold text-gray-900 dark:text-white truncate">
+                                        <a href="#">{{ $account['title'] }}</a>
+                                    </h3>
+
+                                    {{-- DIUBAH: Ukuran harga dari text-2xl menjadi text-xl --}}
+                                    <p class="mt-2 text-xl font-extrabold text-green-600 dark:text-green-500">
+                                        {{ $account['price'] }}
+                                    </p>
+                                    <div class="mt-4">
+                                        {{-- DIUBAH: Menambahkan text-sm agar tombol terlihat lebih proporsional --}}
+                                        <a href="#" class="w-full text-center inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition-colors text-sm">
+                                            Lihat Detail
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </main>
 
-        {{-- Footer --}}
         <footer class="py-8 text-center text-sm text-black dark:text-white/70">
-            Copyrigt &copy; {{ date('Y') }} Nexakun. All rights reserved.
+            Copyright &copy; {{ date('Y') }} Nexakun. All rights reserved.
         </footer>
 
     </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800, // Durasi animasi dalam milidetik
+        once: false,     // Apakah animasi hanya terjadi sekali saat scroll
+      });
+    </script>
 </body>
 </html>
