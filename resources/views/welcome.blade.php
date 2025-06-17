@@ -36,6 +36,20 @@
         <x-register-modal />
 
         <main>
+            {{-- Hero Banner Section (Full-width background, overlay, centered text) --}}
+            <div class="relative w-full h-[200px] md:h-[240px] lg:h-[260px] flex items-center justify-center">
+                <img src="{{ asset('images/banner.jpg') }}" alt="Banner Image" class="absolute inset-0 w-full h-full object-cover object-center z-0" />
+                <div class="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
+                <div class="relative z-20 flex flex-col items-center justify-center w-full h-full text-center px-4">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4" data-aos="fade-up">
+                        Gaming Marketplace For All Gamers
+                    </h1>
+                    <p class="text-lg md:text-2xl text-white font-medium" data-aos="fade-up" data-aos-delay="200">
+                        Buy, Sell and Earn With Our Services
+                    </p>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-black py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
