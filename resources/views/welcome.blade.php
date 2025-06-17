@@ -61,67 +61,11 @@
                             Temukan kategori game yang paling banyak dicari saat ini.
                         </p>
                     </div>
+            {{-- PANGGIL KOMPONEN GAME POPULER --}}
+            <x-sections.popular-games />
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        {{-- Kartu Kategori Game dengan animasi dan delay berbeda --}}
-                        <div data-aos="fade-up" data-aos-delay="300" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Valorant</h3>
-                        </div>
-                        <div data-aos="fade-up" data-aos-delay="400" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Genshin Impact</h3>
-                        </div>
-                        <div data-aos="fade-up" data-aos-delay="500" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Mobile Legends</h3>
-                        </div>
-                        <div data-aos="fade-up" data-aos-delay="600" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 p-6 text-center">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Honkai Star Rail</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-gray-100 dark:bg-gray-900 py-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-left mb-12">
-                        <h2 data-aos="fade-up" class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                            Akun Terbaru
-                        </h2>
-                        <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl text-lg text-gray-500 dark:text-gray-400">
-                            Pilih akun yang baru saja ditambahkan dan siap untuk kamu mainkan.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        @foreach ($accounts as $account)
-                            {{-- Animasi dengan delay yang dihitung otomatis berdasarkan urutan --}}
-                            <div data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4 + 1) * 100 }}" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:-translate-y-2">
-                                <a href="#">
-                                    <img class="h-48 w-full object-cover" src="{{ $account['image'] }}" alt="Gambar {{ $account['title'] }}">
-                                </a>
-                                <div class="p-6">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ $account['category'] }}</p>
-                                    
-                                    {{-- DIUBAH: Ukuran judul dari text-lg menjadi text-base --}}
-                                    <h3 class="mt-1 text-base font-bold text-gray-900 dark:text-white truncate">
-                                        <a href="#">{{ $account['title'] }}</a>
-                                    </h3>
-
-                                    {{-- DIUBAH: Ukuran harga dari text-2xl menjadi text-xl --}}
-                                    <p class="mt-2 text-xl font-extrabold text-green-600 dark:text-green-500">
-                                        {{ $account['price'] }}
-                                    </p>
-                                    <div class="mt-4">
-                                        {{-- DIUBAH: Menambahkan text-sm agar tombol terlihat lebih proporsional --}}
-                                        <a href="#" class="w-full text-center inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition-colors text-sm">
-                                            Lihat Detail
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
+            {{-- PANGGIL KOMPONEN AKUN TERBARU DAN KIRIM DATA $accounts --}}
+            <x-sections.latest-accounts :accounts="$accounts" />
         </main>
 
         <footer class="py-8 text-center text-sm text-black dark:text-white/70">
