@@ -36,9 +36,9 @@
         <x-register-modal />
 
         <main>
-            {{-- Hero Banner Section (Full-width background, overlay, centered text) --}}
-            <div class="relative w-full h-[200px] md:h-[240px] lg:h-[260px] flex items-center justify-center">
-                <img src="{{ asset('images/banner.jpg') }}" alt="Banner Image" class="absolute inset-0 w-full h-full object-cover object-center z-0" />
+           {{-- Hero Banner Section (Full-width background, overlay, centered text) --}}
+            <div class="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center">
+                <img src="{{ asset('images/banner-game.png') }}" alt="Banner Image" class="absolute inset-0 w-full h-full object-cover object-center z-0" />
                 <div class="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
                 <div class="relative z-20 flex flex-col items-center justify-center w-full h-full text-center px-4">
                     <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4" data-aos="fade-up">
