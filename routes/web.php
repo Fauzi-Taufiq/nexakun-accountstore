@@ -10,25 +10,25 @@ Route::get('/', function () {
     // Siapkan data dummy di sini, seolah-olah dari database
     $accounts = [
         [
-            'image' => 'https://placehold.co/400x300/E74C3C/FFFFFF?text=Akun+Valorant',
+            'image' => 'images/accounts/valo-acc.jpg',
             'category' => 'Valorant',
             'title' => 'Akun Sultan Radiant Full Skin',
             'price' => 'Rp 2.500.000'
         ],
         [
-            'image' => 'https://placehold.co/400x300/3498DB/FFFFFF?text=Akun+Genshin',
+            'image' => 'images/accounts/gi-acc.png',
             'category' => 'Genshin Impact',
             'title' => 'Akun AR 60 C6 Raiden',
             'price' => 'Rp 3.150.000'
         ],
         [
-            'image' => 'https://placehold.co/400x300/2ECC71/FFFFFF?text=Akun+MLBB',
+            'image' => 'images/accounts/ml-acc.jfif',
             'category' => 'Mobile Legends',
             'title' => 'Akun Mythic Glory 100+ Skin',
             'price' => 'Rp 1.200.000'
         ],
         [
-            'image' => 'https://placehold.co/400x300/F1C40F/FFFFFF?text=Akun+HSR',
+            'image' => 'images/accounts/hsr-acc.jpg',
             'category' => 'Honkai Star Rail',
             'title' => 'Akun Trailblazer LVL 70',
             'price' => 'Rp 4.500.000'
