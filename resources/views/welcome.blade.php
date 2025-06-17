@@ -49,18 +49,7 @@
                     </p>
                 </div>
             </div>
-
-            <div class="bg-white dark:bg-black py-16">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
-                    <div class="text-center mb-12">
-                        <h2 data-aos="fade-up" class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                            Game Populer
-                        </h2>
-                        <p data-aos="fade-up" data-aos-delay="200" class="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-400">
-                            Temukan kategori game yang paling banyak dicari saat ini.
-                        </p>
-                    </div>
+            
             {{-- PANGGIL KOMPONEN GAME POPULER --}}
             <x-sections.popular-games />
 
