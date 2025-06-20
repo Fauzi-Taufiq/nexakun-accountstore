@@ -94,9 +94,7 @@
 
 
         {{-- Footer --}}
-        <footer class="py-8 text-center text-sm text-black dark:text-white/70">
-            Copyrigt &copy; {{ date('Y') }} Nexakun. All rights reserved.
-        </footer>
+        <x-footer />
 
     </div>
 </body>
