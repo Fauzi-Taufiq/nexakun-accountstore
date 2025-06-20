@@ -57,9 +57,9 @@
             <x-sections.latest-accounts :accounts="$accounts" />
         </main>
 
-        <footer class="py-8 text-center text-sm text-black dark:text-white/70">
-            Copyright &copy; {{ date('Y') }} Nexakun. All rights reserved.
-        </footer>
+        <x-footer />
+
+        {{-- Tambahkan komponen footer --}}
 
     </div>
 
