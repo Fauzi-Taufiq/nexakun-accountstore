@@ -48,6 +48,10 @@ Route::post('/register', function () {
     return 'Processing Registration...'; // Placeholder
 })->name('register');
 
+Route::get('/games', function () {
+    return view('games');
+});
+
 Route::get('/about', function () {
     return view('about');
 });
