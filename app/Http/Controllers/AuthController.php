@@ -30,8 +30,8 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // UBAH BARIS INI: dari redirect ke dashboard menjadi kembali ke halaman sebelumnya
-        return redirect()->back();
+        // UBAH: Tambahkan pesan sukses untuk notifikasi
+        return redirect()->back()->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name);
     }
 
     /**
@@ -47,8 +47,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // UBAH BARIS INI: dari redirect ke dashboard menjadi kembali ke halaman sebelumnya
-            return redirect()->back();
+            // UBAH: Tambahkan pesan sukses untuk notifikasi
+            return redirect()->back()->with('success', 'Login berhasil! Selamat datang kembali.');
         }
 
         // Pesan error jika login gagal
