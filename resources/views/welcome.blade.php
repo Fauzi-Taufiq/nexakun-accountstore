@@ -29,7 +29,7 @@
 </head>
 <body class="font-sans antialiased">
 
-    <div class="bg-gray-50 dark:bg-black" x-data="{ isLoginModalOpen: false, isRegisterModalOpen: false }" @keydown.escape.window="isLoginModalOpen = false; isRegisterModalOpen = false">
+    <div x-data="{isLoginModalOpen: {{ $errors->has('email') && !$errors->has('name') ? 'true' : 'false' }},isRegisterModalOpen: {{ $errors->any() && $errors->has('name') ? 'true' : 'false' }},open: false}">
 
         <x-navbar />
         <x-login-modal />

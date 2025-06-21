@@ -1,6 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+
+// Route untuk menampilkan halaman utama (sudah ada)
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// Route untuk proses authentikasi
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Contoh route yang akan kita lindungi nanti
+Route::get('/dashboard', function() {
+    return 'Ini adalah halaman dashboard, hanya untuk user yang sudah login.';
+})->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');
