@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nexakun - Jual Beli Akun Game</title>
 
-    {{-- BARU: Menambahkan ikon website (favicon) --}}
-    {{-- Pastikan kamu memiliki file 'logo.png' di dalam folder 'public/images/' --}}
-    {{-- atau sesuaikan path-nya dengan lokasi file ikon-mu. --}}
     <link rel="icon" type="image/png" href="{{ asset('images/logo-noteks.png') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -28,6 +25,21 @@
     </style>
 </head>
 <body class="font-sans antialiased">
+
+    {{-- BARU: Notifikasi akan muncul di sini --}}
+    @if (session('success'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 transform translate-x-full"
+             x-transition:enter-end="opacity-100 transform translate-x-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100 transform translate-x-0"
+             x-transition:leave-end="opacity-0 transform translate-x-full"
+             class="fixed top-20 right-5 bg-green-500 text-white py-2 px-4 rounded-xl text-sm z-50 shadow-lg">
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
+
 
     <div x-data="{isLoginModalOpen: {{ $errors->has('email') && !$errors->has('name') ? 'true' : 'false' }},isRegisterModalOpen: {{ $errors->any() && $errors->has('name') ? 'true' : 'false' }},open: false}">
 
