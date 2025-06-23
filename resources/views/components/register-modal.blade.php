@@ -8,11 +8,9 @@
     x-transition:leave-end="opacity-0 scale-90"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
     style="display: none;"
+    x-cloak
 >
-    <div
-        @click.away="isRegisterModalOpen = false"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 mx-4"
-    >
+    <div @click.away="isRegisterModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 mx-4">
         <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Register</h3>
             <button @click="isRegisterModalOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -25,20 +23,29 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
-                    <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-300 dark:border-gray-600' }} rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 
                 <div class="mb-4">
                     <label for="email_register" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
-                    <input type="email" name="email" id="email_register" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    <input type="email" name="email" id="email_register" value="{{ old('email') }}" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300 dark:border-gray-600' }} rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="password_register" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                    <input type="password" name="password" id="password_register" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    <input type="password" name="password" id="password_register" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300 dark:border-gray-600' }} rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                 <div class="mb-4">
+                <div class="mb-4">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Konfirmasi Password</label>
                     <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
                 </div>

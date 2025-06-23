@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route untuk menampilkan halaman statis
+Route::view('/about', 'about')->name('about');
+Route::view('/contact', 'contact')->name('contact');
 
+// Route untuk halaman utama dengan data akun
 Route::get('/', function () {
     // Siapkan data dummy di sini, seolah-olah dari database
     $accounts = [
@@ -34,19 +36,15 @@ Route::get('/', function () {
             'price' => 'Rp 4.500.000'
         ],
     ];
-
-    // Kirim data $accounts ke view 'welcome'
     return view('welcome', ['accounts' => $accounts]);
+})->name('home');
+
+// Grup Route untuk proses otentikasi
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/register', 'register')->name('register');
+    Route::post('/login', 'login')->name('login');
+    Route::post('/logout', 'logout')->name('logout');
 });
-
-
-Route::post('/login', function () {
-    return 'Processing Login...'; // Placeholder
-})->name('login');
-
-Route::post('/register', function () {
-    return 'Processing Registration...'; // Placeholder
-})->name('register');
 
 Route::get('/games', function () {
     return view('games');
@@ -59,3 +57,7 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('contact');
 });
+// Contoh route yang dilindungi
+Route::get('/dashboard', function() {
+    return 'Ini adalah halaman dashboard, hanya untuk user yang sudah login.';
+})->middleware('auth')->name('dashboard');

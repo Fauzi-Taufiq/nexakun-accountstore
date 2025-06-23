@@ -8,11 +8,9 @@
     x-transition:leave-end="opacity-0 scale-90"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
     style="display: none;"
+    x-cloak
 >
-    <div
-        @click.away="isLoginModalOpen = false"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 mx-4"
-    >
+    <div @click.away="isLoginModalOpen = false" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 mx-4">
         <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
             <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Login</h3>
             <button @click="isLoginModalOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -23,9 +21,18 @@
         <div class="mt-4">
             <form action="{{ route('login') }}" method="POST">
                 @csrf
+                
+                @if ($errors->has('email') && !$errors->has('name'))
+                    <div class="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 rounded-md">
+                        <p class="text-red-600 dark:text-red-400 text-sm">
+                            {{ $errors->first('email') }}
+                        </p>
+                    </div>
+                @endif
+                
                 <div class="mb-4">
                     <label for="email_login" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
-                    <input type="email" name="email" id="email_login" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 dark:text-white" required>
+                    <input type="email" name="email" id="email_login" value="{{ old('email') }}" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300 dark:border-gray-600' }} rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-900 dark:text-white" required>
                 </div>
 
                 <div class="mb-4">
