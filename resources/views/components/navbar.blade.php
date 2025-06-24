@@ -2,12 +2,12 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <div class="flex items-center">
-        <a href="{{ url('/') }}" class="text-white text-xl font-bold">
+        <a href="/" class="text-white text-xl font-bold">
           <img src="/images/ps=logo.png" alt="Logo Nexakun" class="h-14 w-auto">
         </a>
         <div class="hidden md:block">
           <div class="ml-10 flex items-baseline space-x-4">
-            <a href="{{ url('/games') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Games</a>
+            <a href="{{ url('/') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Games</a>
             <a href="{{ url('/about') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
             <a href="{{ url('/contact') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
           </div>
@@ -15,10 +15,13 @@
       </div>
 
       {{-- TAMPILAN DESKTOP --}}
-      <div class="hidden md:flex items-center space-x-3">
+      <div class="hidden md:flex items-center space-x-4">
         @auth
-          {{-- Tampil jika SUDAH LOGIN --}}
-          <span class="text-gray-300 text-sm">Halo, {{ Auth::user()->name }}</span>
+          {{-- UBAH BAGIAN INI --}}
+          <div class="flex items-center space-x-3">
+            <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Foto Profil">
+            <span class="text-gray-300 text-sm font-medium">{{ Auth::user()->name }}</span>
+          </div>
           <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="text-white bg-red-500 hover:bg-red-600 px-3 py-2 rounded-md text-sm font-medium">Logout</button>
@@ -54,8 +57,11 @@
     </div>
     <div class="pt-4 pb-3 border-t border-gray-700">
       @auth
-        {{-- Tampil jika SUDAH LOGIN (Mobile) --}}
+        {{-- Tampilan mobile sudah sesuai (foto kiri, nama kanan) --}}
         <div class="flex items-center px-5">
+          <div class="flex-shrink-0">
+            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Foto Profil">
+          </div>
           <div class="ml-3">
             <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>
             <div class="text-sm font-medium leading-none text-gray-400">{{ Auth::user()->email }}</div>
