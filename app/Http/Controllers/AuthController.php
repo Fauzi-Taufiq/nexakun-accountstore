@@ -22,16 +22,17 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        Auth::login($user);
+        // Hapus Auth::login($user); karena tidak ada login otomatis
 
-        // UBAH: Tambahkan pesan sukses untuk notifikasi
-        return redirect()->back()->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name);
+        // UBAH: Hapus ->with('registration_success', true)
+        return redirect()->back()
+                         ->with('success', 'Registrasi berhasil! Silakan login untuk melanjutkan.');
     }
 
     /**
@@ -47,11 +48,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // UBAH: Tambahkan pesan sukses untuk notifikasi
             return redirect()->back()->with('success', 'Login berhasil! Selamat datang kembali.');
         }
 
-        // Pesan error jika login gagal
         throw ValidationException::withMessages([
             'email' => __('auth.failed'),
         ]);
@@ -67,7 +66,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Saat logout, kita arahkan ke halaman utama
         return redirect('/');
     }
 }
