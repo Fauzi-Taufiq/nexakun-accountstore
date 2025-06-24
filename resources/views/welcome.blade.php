@@ -26,7 +26,6 @@
 </head>
 <body class="font-sans antialiased">
 
-    {{-- BARU: Notifikasi akan muncul di sini --}}
     @if (session('success'))
         <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
              x-transition:enter="transition ease-out duration-300"
@@ -40,15 +39,23 @@
         </div>
     @endif
 
-
-    <div x-data="{isLoginModalOpen: {{ $errors->has('email') && !$errors->has('name') ? 'true' : 'false' }},isRegisterModalOpen: {{ $errors->any() && $errors->has('name') ? 'true' : 'false' }},open: false}">
+    {{-- 
+        UBAH LOGIKANYA DI SINI:
+        - isRegisterModalOpen: Buka jika ada error di field 'name' ATAU 'password' (khas registrasi).
+        - isLoginModalOpen: Buka jika ada error di 'email' TAPI BUKAN error dari registrasi.
+    --}}
+    <div x-data="{
+        isRegisterModalOpen: {{ $errors->has('name') || $errors->has('password') ? 'true' : 'false' }},
+        isLoginModalOpen: {{ $errors->has('email') && !$errors->has('name') && !$errors->has('password') ? 'true' : 'false' }},
+        open: false
+    }">
 
         <x-navbar />
         <x-login-modal />
         <x-register-modal />
 
         <main>
-           {{-- Hero Banner Section (Full-width background, overlay, centered text) --}}
+           {{-- Hero Banner Section --}}
             <div class="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center">
                 <img src="{{ asset('images/banner-game.png') }}" alt="Banner Image" class="absolute inset-0 w-full h-full object-cover object-center z-0" />
                 <div class="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
@@ -62,24 +69,23 @@
                 </div>
             </div>
             
-            {{-- PANGGIL KOMPONEN GAME POPULER --}}
             <x-sections.popular-games />
 
-            {{-- PANGGIL KOMPONEN AKUN TERBARU DAN KIRIM DATA $accounts --}}
-            <x-sections.latest-accounts :accounts="$accounts" />
+            {{-- Cek apakah variabel $accounts ada sebelum meloopingnya --}}
+            @isset($accounts)
+                <x-sections.latest-accounts :accounts="$accounts" />
+            @endisset
         </main>
 
         <x-footer />
-
-        {{-- Tambahkan komponen footer --}}
 
     </div>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init({
-        duration: 800, // Durasi animasi dalam milidetik
-        once: false,     // Apakah animasi hanya terjadi sekali saat scroll
+        duration: 800,
+        once: false,
       });
     </script>
 </body>
