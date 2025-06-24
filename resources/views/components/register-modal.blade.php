@@ -19,7 +19,8 @@
         </div>
 
         <div class="mt-4">
-            <form action="{{ route('register') }}" method="POST">
+            {{-- UBAH: Tambahkan enctype untuk upload file --}}
+            <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
@@ -33,6 +34,15 @@
                     <label for="email_register" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
                     <input type="email" name="email" id="email_register" value="{{ old('email') }}" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300 dark:border-gray-600' }} rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm text-gray-900 dark:text-white" required>
                     @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- BARU: Tambahkan input untuk foto profil --}}
+                <div class="mb-4">
+                    <label for="profile_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Foto Profil (Opsional)</label>
+                    <input type="file" name="profile_image" id="profile_image" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                    @error('profile_image')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
