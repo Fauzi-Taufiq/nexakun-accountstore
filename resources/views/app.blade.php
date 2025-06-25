@@ -61,10 +61,10 @@
                 <div class="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
                 <div class="relative z-20 flex flex-col items-center justify-center w-full h-full text-center px-4">
                     <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4" data-aos="fade-up">
-                        Gaming Marketplace For All Gamers
+                        Skins First. Skills... Maybe Later.
                     </h1>
                     <p class="text-lg md:text-2xl text-white font-medium" data-aos="fade-up" data-aos-delay="200">
-                        Buy, Sell and Earn With Our Services
+                        Look good, die stylish. Trade accounts, items, and more at Nexakun.
                     </p>
                 </div>
             </div>
