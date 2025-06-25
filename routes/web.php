@@ -36,7 +36,7 @@ Route::get('/', function () {
             'price' => 'Rp 4.500.000'
         ],
     ];
-    return view('welcome', ['accounts' => $accounts]);
+    return view('app', ['accounts' => $accounts]);
 })->name('home');
 
 // Grup Route untuk proses otentikasi
