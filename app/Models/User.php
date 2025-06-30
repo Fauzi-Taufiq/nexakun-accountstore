@@ -46,4 +46,60 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the game accounts for the user.
+     */
+    public function gameAccounts()
+    {
+        return $this->hasMany(GameAccount::class);
+    }
+
+    /**
+     * Get the wallet for the user.
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    /**
+     * Get transactions where user is buyer.
+     */
+    public function buyerTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'buyer_id');
+    }
+
+    /**
+     * Get transactions where user is seller.
+     */
+    public function sellerTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'seller_id');
+    }
+
+    /**
+     * Get all transactions for the user (as buyer or seller).
+     */
+    public function allTransactions()
+    {
+        return Transaction::where('buyer_id', $this->id)
+            ->orWhere('seller_id', $this->id);
+    }
+
+    /**
+     * Check if user has wallet, create if not exists.
+     */
+    public function getOrCreateWallet()
+    {
+        if (!$this->wallet) {
+            $this->wallet()->create([
+                'balance' => 0,
+                'escrow_balance' => 0
+            ]);
+            $this->refresh();
+        }
+        return $this->wallet;
+    }
 }
