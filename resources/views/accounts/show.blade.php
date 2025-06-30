@@ -44,7 +44,7 @@
                     <h1 class="text-3xl font-bold text-white mb-2">{{ $gameAccount->account_title }}</h1>
                     <div class="flex flex-wrap items-center space-x-3 mb-6">
                         <span class="inline-block px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-full">{{ $gameAccount->game_name }}</span>
-                        <span class="text-gray-400">{{ $gameAccount->created_at->format('d M Y') }}</span>
+                        <span class="text-gray-400">{{ $gameAccount->created_at->setTimezone('Asia/Jakarta')->format('d M Y') }}</span>
                         <span class="text-gray-500">•</span>
                         <span class="text-gray-400">{{ $gameAccount->created_at->diffForHumans() }}</span>
                     </div>
@@ -171,7 +171,7 @@
                         <img src="{{ asset('storage/' . ($gameAccount->user->profile_image ?? 'images/default-avatar.png')) }}" alt="Seller" class="w-16 h-16 rounded-full">
                         <div>
                             <p class="text-white font-bold">{{ $gameAccount->user->name }}</p>
-                            <p class="text-gray-400 text-sm">Member sejak {{ $gameAccount->user->created_at->format('M Y') }}</p>
+                            <p class="text-gray-400 text-sm">Member sejak {{ $gameAccount->user->created_at->setTimezone('Asia/Jakarta')->format('M Y') }}</p>
                         </div>
                     </div>
                     <div class="space-y-2 text-sm">

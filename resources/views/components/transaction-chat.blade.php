@@ -21,7 +21,7 @@
                     @endif
                     <p class="text-white break-words whitespace-pre-line">{{ $message->message }}</p>
                     <div class="text-xs text-gray-400 mt-1">
-                        {{ $message->created_at->format('M j, Y H:i') }}
+                        {{ $message->created_at->setTimezone('Asia/Jakarta')->format('M j, Y H:i') }}
                     </div>
                 </div>
             </div>
