@@ -49,7 +49,7 @@
                             </div>
                             <div>
                                 <p class="text-gray-400 text-sm">Date</p>
-                                <p class="font-medium">{{ $transaction->created_at->format('M j, Y H:i') }}</p>
+                                <p class="font-medium">{{ $transaction->created_at->setTimezone('Asia/Jakarta')->format('M j, Y H:i') }}</p>
                             </div>
                         </div>
 
@@ -74,7 +74,7 @@
                                         <div>
                                             <p class="text-gray-400 text-xs">Payment Due</p>
                                             <p class="font-medium {{ now() > $transaction->payment_deadline ? 'text-red-500' : 'text-green-500' }}">
-                                                {{ $transaction->payment_deadline->format('M j, Y H:i') }}
+                                                {{ $transaction->payment_deadline->setTimezone('Asia/Jakarta')->format('M j, Y H:i') }}
                                             </p>
                                         </div>
                                     @endif
@@ -82,7 +82,7 @@
                                         <div>
                                             <p class="text-gray-400 text-xs">Delivery Due</p>
                                             <p class="font-medium {{ now() > $transaction->delivery_deadline ? 'text-red-500' : 'text-green-500' }}">
-                                                {{ $transaction->delivery_deadline->format('M j, Y H:i') }}
+                                                {{ $transaction->delivery_deadline->setTimezone('Asia/Jakarta')->format('M j, Y H:i') }}
                                             </p>
                                         </div>
                                     @endif
@@ -90,7 +90,7 @@
                                         <div>
                                             <p class="text-gray-400 text-xs">Inspection Due</p>
                                             <p class="font-medium {{ now() > $transaction->inspection_deadline ? 'text-red-500' : 'text-green-500' }}">
-                                                {{ $transaction->inspection_deadline->format('M j, Y H:i') }}
+                                                {{ $transaction->inspection_deadline->setTimezone('Asia/Jakarta')->format('M j, Y H:i') }}
                                             </p>
                                         </div>
                                     @endif
