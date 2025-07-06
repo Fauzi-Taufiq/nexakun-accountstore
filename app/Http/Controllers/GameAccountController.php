@@ -118,4 +118,14 @@ class GameAccountController extends Controller
         return redirect()->route('dashboard.my-accounts')
             ->with('success', 'Akun berhasil dihapus!');
     }
+
+    public function edit(GameAccount $gameAccount)
+    {
+        // Pastikan user hanya bisa mengedit akun miliknya sendiri
+        if ($gameAccount->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $user = Auth::user();
+        return view('dashboard.edit-account', compact('gameAccount', 'user'));
+    }
 } 

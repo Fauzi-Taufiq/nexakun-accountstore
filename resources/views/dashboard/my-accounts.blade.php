@@ -133,23 +133,19 @@
                                 
                                 <div class="absolute left-0 mt-2 w-48 bg-dark-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                                     <div class="py-2">
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-dark-700 hover:text-white transition-colors">
+                                        <a href="{{ route('game-accounts.edit', $account->id) }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-dark-700 hover:text-white transition-colors">
                                             <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                             </svg>
                                             Edit
                                         </a>
-                                        <form action="{{ route('game-accounts.destroy', $account) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Yakin ingin menghapus akun ini?')" 
-                                                    class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-dark-700 hover:text-red-300 transition-colors">
-                                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                                Hapus
-                                            </button>
-                                        </form>
+                                        <button type="button" onclick="openDeleteModal({{ $account->id }}, '{{ $account->account_title }}')" 
+                                                class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-dark-700 hover:text-red-300 transition-colors">
+                                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            Hapus
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -233,5 +229,164 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 0;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+    background: #dc2626;
+    padding: 1.5rem;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.btn-modal {
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.btn-cancel {
+    background: #475569;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #64748b;
+}
+
+.btn-delete {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #b91c1c;
+}
 </style>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="flex items-center justify-center mb-3">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-white">Hapus Akun</h3>
+        </div>
+        
+        <div class="modal-body">
+            <div class="text-center">
+                <p class="text-gray-300 mb-3">Yakin ingin menghapus akun:</p>
+                <div class="bg-dark-700 rounded-lg p-3 mb-4">
+                    <h4 id="accountTitle" class="text-white font-medium"></h4>
+                </div>
+                <p class="text-gray-400 text-sm">Tindakan ini tidak dapat dibatalkan</p>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button onclick="closeDeleteModal()" class="btn-modal btn-cancel">
+                Batal
+            </button>
+            <form id="deleteForm" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
+            <button onclick="confirmDelete()" class="btn-modal btn-delete">
+                Hapus
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentAccountId = null;
+
+function openDeleteModal(accountId, accountTitle) {
+    currentAccountId = accountId;
+    document.getElementById('accountTitle').textContent = accountTitle;
+    document.getElementById('deleteModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    currentAccountId = null;
+}
+
+function confirmDelete() {
+    if (currentAccountId) {
+        const form = document.getElementById('deleteForm');
+        form.action = `/dashboard/game-accounts/${currentAccountId}`;
+        form.submit();
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDeleteModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeleteModal();
+    }
+});
+</script>
 @endsection 

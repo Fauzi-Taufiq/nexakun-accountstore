@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/dashboard/game-accounts', 'store')->name('game-accounts.store');
         Route::put('/dashboard/game-accounts/{gameAccount}', 'update')->name('game-accounts.update');
         Route::delete('/dashboard/game-accounts/{gameAccount}', 'destroy')->name('game-accounts.destroy');
+        Route::get('/dashboard/game-accounts/{gameAccount}/edit', 'edit')->name('game-accounts.edit');
     });
 
     // Escrow Routes

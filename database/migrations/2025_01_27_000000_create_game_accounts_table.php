@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('game_name');
-            $table->string('title');
+            $table->string('account_title');
             $table->text('description');
             $table->decimal('price', 10, 2);
-            $table->json('specifications');
+            $table->json('images')->nullable();
             $table->string('status')->default('available');
             $table->string('account_level')->nullable();
             $table->string('server_region')->nullable();
