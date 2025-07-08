@@ -17,7 +17,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('dashboard.index', compact('user'));
+        // Ambil ulang akun game dari database agar status selalu up-to-date
+        $gameAccounts = \App\Models\GameAccount::where('user_id', $user->id)->get();
+        return view('dashboard.index', compact('user', 'gameAccounts'));
     }
 
     public function sellAccount()
@@ -29,8 +31,9 @@ class DashboardController extends Controller
     public function myAccounts()
     {
         $user = Auth::user();
-        // TODO: Implementasi untuk menampilkan akun yang dijual user
-        return view('dashboard.my-accounts', compact('user'));
+        // Ambil ulang akun game dari database agar status selalu up-to-date
+        $gameAccounts = \App\Models\GameAccount::where('user_id', $user->id)->get();
+        return view('dashboard.my-accounts', compact('user', 'gameAccounts'));
     }
 
     public function transactions()
@@ -49,5 +52,17 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         return view('dashboard.profile', compact('user'));
+    }
+
+    public function transactionDetail(Transaction $transaction)
+    {
+        $user = Auth::user();
+        
+        // Check if user is authorized to view this transaction
+        if ($transaction->buyer_id !== $user->id && $transaction->seller_id !== $user->id) {
+            abort(403);
+        }
+        
+        return view('dashboard.transaction-detail', compact('transaction', 'user'));
     }
 } 

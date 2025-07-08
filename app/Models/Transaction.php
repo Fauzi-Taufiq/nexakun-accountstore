@@ -21,6 +21,7 @@ class Transaction extends Model
         'escrow_fee',
         'seller_receives',
         'status',
+        'payment_method',
         'payment_deadline',
         'delivery_deadline',
         'inspection_deadline',

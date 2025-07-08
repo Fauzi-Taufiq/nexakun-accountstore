@@ -65,29 +65,27 @@
             <div>
                 <textarea name="message" rows="3" class="w-full bg-gray-700 text-white rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your message..."></textarea>
             </div>
-
-            <div class="flex justify-between items-center">
+            <div class="flex justify-end">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     Send Message
                 </button>
-
-                @if(auth()->id() === $transaction->buyer_id && in_array($transaction->status, ['account_delivered', 'inspection_period']))
-                    <div class="flex space-x-2">
-                        <form action="{{ route('escrow.accept-account', $transaction) }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-                                Confirm Receipt
-                            </button>
-                        </form>
-
-                        <button type="button" onclick="document.getElementById('refund-modal-{{ $transaction->id }}').classList.remove('hidden')"
-                            class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
-                            Request Refund
-                        </button>
-                    </div>
-                @endif
             </div>
         </form>
+
+        @if(auth()->id() === $transaction->buyer_id && in_array($transaction->status, ['account_delivered', 'inspection_period']))
+            <div class="space-y-2 mt-4">
+                <form action="{{ route('escrow.accept-account', $transaction) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Confirm Receipt
+                    </button>
+                </form>
+                <button type="button" onclick="document.getElementById('refund-modal-{{ $transaction->id }}').classList.remove('hidden')"
+                    class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                    Request Refund
+                </button>
+            </div>
+        @endif
     @else
         <div class="text-center text-gray-400 py-4">
             @if($transaction->status === 'completed')

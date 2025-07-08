@@ -97,6 +97,31 @@
                                 </div>
                             </div>
                         @endif
+
+                        <!-- Action Buttons -->
+                        <div class="border-t border-gray-700 pt-4 mt-4">
+                            <div class="flex space-x-3">
+                                <a href="{{ route('dashboard.transaction-detail', $transaction) }}" 
+                                   class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                                    Lihat Detail
+                                </a>
+                                @if($transaction->status === 'pending')
+                                <span class="px-4 py-2 bg-yellow-600 text-white rounded-lg text-sm">
+                                    Menunggu Pembayaran
+                                </span>
+                                @endif
+                                @if(auth()->id() === $transaction->seller_id && $transaction->status === 'disputed')
+                                    <form action="{{ route('escrow.seller-approve-refund', $transaction) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">Approve Refund</button>
+                                    </form>
+                                    <form action="{{ route('escrow.seller-reject-refund', $transaction) }}" method="POST" class="inline ml-2">
+                                        @csrf
+                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">Reject Refund</button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
 

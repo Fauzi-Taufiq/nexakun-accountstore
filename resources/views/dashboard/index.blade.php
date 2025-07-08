@@ -46,7 +46,7 @@
                 </div>
                 <div class="ml-4">
                     <p class="text-sm font-medium text-gray-400">Pendapatan</p>
-                    <p class="text-2xl font-bold text-white">Rp 0</p>
+                    <p class="text-2xl font-bold text-white">{{ $user->wallet ? $user->wallet->formatted_balance : 'Rp 0' }}</p>
                 </div>
             </div>
         </div>

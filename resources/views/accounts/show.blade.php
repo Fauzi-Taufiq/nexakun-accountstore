@@ -5,7 +5,7 @@
 @section('content')
 <div class="bg-gray-900 min-h-screen py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Breadcrumb -->
+        <!-- Breadcrumb -->
         <nav class="flex text-sm mb-8" aria-label="Breadcrumb">
             <ol class="flex items-center space-x-2">
                 <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white">Home</a></li>
@@ -13,8 +13,9 @@
                 <li><a href="{{ route('accounts.index') }}" class="text-gray-400 hover:text-white">Akun Game</a></li>
                 <li><span class="text-gray-500">/</span></li>
                 <li><span class="text-white">{{ $gameAccount->account_title }}</span></li>
-                </ol>
-            </nav>
+            </ol>
+        </nav>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
@@ -39,6 +40,7 @@
                         </div>
                     @endif
                 </div>
+
                 <!-- Account Details -->
                 <div class="bg-gray-800 rounded-xl p-8 shadow-lg">
                     <h1 class="text-3xl font-bold text-white mb-2">{{ $gameAccount->account_title }}</h1>
@@ -48,11 +50,13 @@
                         <span class="text-gray-500">•</span>
                         <span class="text-gray-400">{{ $gameAccount->created_at->diffForHumans() }}</span>
                     </div>
-                    <div class="prose prose-invert max-w-none mb-6">
+                    
+                    <div class="prose prose-invert max-w-none mb-8">
                         <p class="text-gray-300 text-lg leading-relaxed">{{ $gameAccount->description }}</p>
                     </div>
+
                     <!-- Account Specifications -->
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-4">
                             <h3 class="text-xl font-bold text-white mb-4">Spesifikasi Akun</h3>
                             @if($gameAccount->account_level)
@@ -79,31 +83,38 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="space-y-4">
                             <h3 class="text-xl font-bold text-white mb-4">Keamanan Escrow</h3>
-                            <div class="space-y-3">
+                            <div class="space-y-4">
                                 <div class="flex items-start space-x-3">
-                                    <svg class="w-5 h-5 text-green-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
+                                    <div class="flex-shrink-0 w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
                                     <div>
                                         <p class="text-white font-medium">Dana Aman di Escrow</p>
                                         <p class="text-gray-400 text-sm">Pembayaran ditahan sampai akun diterima</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start space-x-3">
-                                    <svg class="w-5 h-5 text-green-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
+                                    <div class="flex-shrink-0 w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
                                     <div>
                                         <p class="text-white font-medium">Masa Pemeriksaan 24 Jam</p>
                                         <p class="text-gray-400 text-sm">Waktu untuk memeriksa akun sebelum diterima</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start space-x-3">
-                                    <svg class="w-5 h-5 text-green-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
+                                    <div class="flex-shrink-0 w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
                                     <div>
                                         <p class="text-white font-medium">Garansi Dispute</p>
                                         <p class="text-gray-400 text-sm">Dapat mengajukan dispute jika ada masalah</p>
@@ -114,6 +125,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Price Card -->
@@ -123,6 +135,7 @@
                         <p class="text-4xl font-bold text-white">{{ $gameAccount->formatted_price }}</p>
                         <p class="text-gray-400 text-sm">+5% biaya escrow</p>
                     </div>
+                    
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-sm">
                             <span class="text-gray-400">Harga Akun</span>
@@ -139,19 +152,33 @@
                             </div>
                         </div>
                     </div>
+
                     @auth
                         @if(Auth::id() !== $gameAccount->user_id)
-                            <form action="{{ route('escrow.buy-account', $gameAccount) }}" method="POST" class="space-y-3">
+                            <form action="{{ route('escrow.buy-account', $gameAccount) }}" method="POST" id="buyAccountForm">
                                 @csrf
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-2">Metode Pembayaran</label>
-                                    <select name="payment_method" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-blue-500">
-                                        <option value="wallet">Wallet (Saldo: {{ Auth::user()->getOrCreateWallet()->formatted_balance }})</option>
-                                        <option value="bank_transfer">Transfer Bank</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold text-lg">Beli Sekarang</button>
+                                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold text-lg" id="buyButton">
+                                    Beli Sekarang
+                                </button>
                             </form>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const form = document.getElementById('buyAccountForm');
+                                    const button = document.getElementById('buyButton');
+                                    let submitted = false;
+                                    if (form && button) {
+                                        form.addEventListener('submit', function(e) {
+                                            if (submitted) {
+                                                e.preventDefault();
+                                                return false;
+                                            }
+                                            submitted = true;
+                                            button.textContent = 'Memproses...';
+                                            button.disabled = true;
+                                        });
+                                    }
+                                });
+                            </script>
                         @else
                             <div class="text-center py-4">
                                 <p class="text-gray-400">Ini adalah akun Anda</p>
@@ -159,11 +186,16 @@
                         @endif
                     @else
                         <div class="space-y-3">
-                            <a href="#" onclick="isLoginModalOpen = true" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold text-lg">Login untuk Beli</a>
-                            <a href="#" onclick="isRegisterModalOpen = true" class="block w-full bg-gray-700 text-white text-center py-3 rounded-lg hover:bg-gray-600 transition-colors">Daftar Akun Baru</a>
+                            <a href="#" onclick="isLoginModalOpen = true" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center py-4 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-bold text-lg">
+                                Login untuk Beli
+                            </a>
+                            <a href="#" onclick="isRegisterModalOpen = true" class="block w-full bg-gray-700 text-white text-center py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                                Daftar Akun Baru
+                            </a>
                         </div>
                     @endauth
                 </div>
+
                 <!-- Seller Info -->
                 <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
                     <h3 class="text-xl font-bold text-white mb-4">Informasi Penjual</h3>
@@ -184,7 +216,9 @@
                             <span class="text-white">{{ $gameAccount->user->gameAccounts()->where('status', 'available')->count() }}</span>
                         </div>
                     </div>
-                    <button class="w-full mt-4 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">Lihat Profil Penjual</button>
+                    <button class="w-full mt-4 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">
+                        Lihat Profil Penjual
+                    </button>
                 </div>
             </div>
         </div>

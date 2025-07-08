@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/sell-account', 'sellAccount')->name('dashboard.sell-account');
         Route::get('/dashboard/my-accounts', 'myAccounts')->name('dashboard.my-accounts');
         Route::get('/dashboard/transactions', 'transactions')->name('dashboard.transactions');
+        Route::get('/dashboard/transactions/{transaction}', 'transactionDetail')->name('dashboard.transaction-detail');
         Route::get('/dashboard/profile', 'profile')->name('dashboard.profile');
     });
 
@@ -87,6 +88,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/accept-account/{transaction}', 'acceptAccount')->name('escrow.accept-account');
         Route::post('/dispute-account/{transaction}', 'disputeAccount')->name('escrow.dispute-account');
         Route::post('/resolve-dispute/{transaction}', 'resolveDispute')->name('escrow.resolve-dispute');
+        Route::post('/seller-approve-refund/{transaction}', 'sellerApproveRefund')->name('escrow.seller-approve-refund');
+        Route::post('/seller-reject-refund/{transaction}', 'sellerRejectRefund')->name('escrow.seller-reject-refund');
     });
 
     // Wallet Routes
@@ -102,6 +105,21 @@ Route::middleware('auth')->group(function () {
     Route::controller(TransactionMessageController::class)->group(function () {
         Route::post('/transactions/{transaction}/messages', 'store')->name('transaction.messages.store');
         Route::post('/transactions/{transaction}/confirm', 'confirm')->name('transaction.confirm');
+    });
+
+    // Payment Routes
+    Route::controller(App\Http\Controllers\PaymentController::class)->group(function () {
+        Route::get('/payment', 'showPaymentForm')->name('payment.show');
+        Route::post('/payment/create', 'createPayment')->name('payment.create');
+        Route::get('/payment/finish', 'finish')->name('payment.finish');
+        Route::get('/payment/error', 'paymentError')->name('payment.error');
+        Route::get('/payment/pending', 'pending')->name('payment.pending');
+        Route::post('/payment/callback', 'callback')->name('payment.callback');
+        
+        // Admin Payment Dashboard Routes
+        Route::get('/admin/payment', 'adminPaymentDashboard')->name('admin.payment.dashboard');
+        Route::post('/admin/payment/simulate', 'simulatePaymentSuccess')->name('admin.payment.simulate');
+        Route::post('/admin/payment/get-transaction', 'getTransactionByCode')->name('admin.payment.get-transaction');
     });
 });
 

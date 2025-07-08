@@ -10,20 +10,40 @@ use App\Models\Wallet;
 
 class EscrowController extends Controller
 {
-    // 1. Pembeli klik "Beli Akun" -> buat transaksi
+    // 1. Pembeli klik "Beli Akun" -> buat transaksi dengan Midtrans
     public function buyAccount(Request $request, GameAccount $gameAccount)
     {
         $user = Auth::user();
 
-        // Check if account is available
-        if ($gameAccount->status !== 'available') {
-            return back()->with('error', 'Akun tidak tersedia');
+        // Cek jika sudah ada transaksi pending_payment untuk akun dan user ini
+        $existing = \App\Models\Transaction::where('game_account_id', $gameAccount->id)
+            ->where('buyer_id', $user->id)
+            ->where('status', 'pending_payment')
+            ->first();
+        if ($existing) {
+            // Redirect ke halaman pembayaran transaksi yang sudah ada
+            return redirect()->route('payment.show')->with([
+                'transaction_id' => $existing->id,
+                'game_account_id' => $gameAccount->id,
+                'amount' => $existing->amount
+            ]);
         }
 
-        // Check if buyer has enough balance
-        $wallet = $user->getOrCreateWallet();
-        if ($wallet->balance < $gameAccount->price) {
-            return back()->with('error', 'Saldo tidak cukup');
+        // Check if account is available
+        if ($gameAccount->status !== 'available') {
+            \Log::error('Account not available', ['status' => $gameAccount->status]);
+            $statusMessage = match($gameAccount->status) {
+                'pending' => 'Akun sedang dalam proses transaksi',
+                'sold' => 'Akun sudah terjual',
+                default => 'Akun tidak tersedia'
+            };
+            return back()->with('error', $statusMessage);
+        }
+
+        // Check if user is trying to buy their own account
+        if ($gameAccount->user_id === $user->id) {
+            \Log::error('User trying to buy own account');
+            return back()->with('error', 'Anda tidak dapat membeli akun Anda sendiri');
         }
 
         // Calculate fees
@@ -31,40 +51,39 @@ class EscrowController extends Controller
         $escrowFee = $amount * 0.05; // 5% fee
         $sellerReceives = $amount - $escrowFee;
 
-        // Create transaction
-        $transaction = Transaction::create([
-            'game_account_id' => $gameAccount->id,
-            'buyer_id' => $user->id,
-            'seller_id' => $gameAccount->user_id,
-            'amount' => $amount,
-            'escrow_fee' => $escrowFee,
-            'seller_receives' => $sellerReceives,
-            'status' => 'pending_payment',
-            'transaction_code' => 'TXN-' . date('Ymd') . '-' . strtoupper(uniqid()),
-            'payment_deadline' => now()->addDays(1),
-            'delivery_deadline' => now()->addDays(2),
-            'inspection_deadline' => now()->addDays(3)
-        ]);
-
-        // Hold the amount in escrow
-        $wallet->holdEscrow($amount, $transaction->id, 'Pembayaran akun game');
-
-        // Update transaction status
-        $transaction->update([
-            'status' => 'payment_confirmed'
-        ]);
+        try {
+            // Create transaction
+            $transaction = Transaction::create([
+                'game_account_id' => $gameAccount->id,
+                'buyer_id' => $user->id,
+                'seller_id' => $gameAccount->user_id,
+                'amount' => $amount,
+                'escrow_fee' => $escrowFee,
+                'seller_receives' => $sellerReceives,
+                'status' => 'pending_payment',
+                'payment_method' => $request->input('payment_method', 'midtrans'),
+                'transaction_code' => 'TXN-' . date('Ymd') . '-' . strtoupper(uniqid()),
+                'payment_deadline' => now()->addDays(1),
+                'delivery_deadline' => now()->addDays(2),
+                'inspection_deadline' => now()->addDays(3)
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to create transaction', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'Gagal membuat transaksi: ' . $e->getMessage());
+        }
 
         // Mark account as pending
         $gameAccount->update(['status' => 'pending']);
 
-        // Create system message
-        $transaction->messages()->create([
-            'user_id' => $user->id,
-            'message' => 'Pembayaran telah dikonfirmasi. Menunggu penjual mengirim detail akun.',
-            'is_credential' => false
+        // Redirect ke payment page
+        return redirect()->route('payment.show')->with([
+            'transaction_id' => $transaction->id,
+            'game_account_id' => $gameAccount->id,
+            'amount' => $amount
         ]);
-
-        return redirect()->route('dashboard.transactions')->with('success', 'Pembayaran berhasil. Menunggu penjual mengirim detail akun.');
     }
 
     // 2. Penjual kirim detail akun
@@ -131,6 +150,16 @@ class EscrowController extends Controller
             return back()->with('error', 'Status transaksi tidak valid');
         }
 
+        // Pastikan escrow sudah di-hold sebelum release
+        $buyerWallet = $user->getOrCreateWallet();
+        if ($buyerWallet->escrow_balance < $transaction->amount) {
+            if ($buyerWallet->balance >= $transaction->amount) {
+                $buyerWallet->holdEscrow($transaction->amount, $transaction->id, 'Escrow Hold (auto) saat konfirmasi penerimaan akun');
+            } else {
+                return back()->with('error', 'Saldo tidak cukup untuk escrow. Silakan top up wallet.');
+            }
+        }
+
         // Update transaction
         $transaction->update([
             'status' => 'completed',
@@ -140,10 +169,11 @@ class EscrowController extends Controller
         // Release escrow to seller
         $seller = $transaction->seller;
         $sellerWallet = $seller->getOrCreateWallet();
-        $sellerWallet->deposit($transaction->seller_receives, [
-            'description' => 'Penjualan akun game #' . $transaction->gameAccount->id,
-            'transaction_id' => $transaction->id
-        ]);
+        $sellerWallet->deposit(
+            $transaction->seller_receives,
+            'Penjualan akun game #' . $transaction->gameAccount->id,
+            $transaction->id
+        );
 
         // Release escrow from buyer
         $buyerWallet = $user->getOrCreateWallet();
@@ -235,10 +265,11 @@ class EscrowController extends Controller
         } else {
             // Release to seller
             $sellerWallet = $transaction->seller->getOrCreateWallet();
-            $sellerWallet->deposit($transaction->seller_receives, [
-                'description' => 'Penjualan akun game #' . $transaction->gameAccount->id,
-                'transaction_id' => $transaction->id
-            ]);
+            $sellerWallet->deposit(
+                $transaction->seller_receives,
+                'Penjualan akun game #' . $transaction->gameAccount->id,
+                $transaction->id
+            );
 
             // Release escrow from buyer
             $buyerWallet = $transaction->buyer->getOrCreateWallet();
@@ -264,5 +295,55 @@ class EscrowController extends Controller
         ]);
 
         return back()->with('success', 'Sengketa telah diselesaikan.');
+    }
+
+    public function sellerApproveRefund(Request $request, Transaction $transaction)
+    {
+        $user = Auth::user();
+        // Pastikan user adalah seller
+        if ($transaction->seller_id !== $user->id) {
+            abort(403);
+        }
+        // Pastikan status disputed
+        if ($transaction->status !== 'disputed') {
+            return back()->with('error', 'Status transaksi tidak valid');
+        }
+        // Refund ke buyer
+        $buyerWallet = $transaction->buyer->getOrCreateWallet();
+        $buyerWallet->releaseEscrow($transaction->amount, $transaction->id, 'Refund dari penjual');
+        // Update transaksi
+        $transaction->update([
+            'status' => 'refunded',
+            'completed_at' => now()
+        ]);
+        // Akun kembali available
+        $transaction->gameAccount->update(['status' => 'available']);
+        // Pesan sistem
+        $transaction->messages()->create([
+            'user_id' => $user->id,
+            'message' => 'Penjual menyetujui refund. Dana telah dikembalikan ke pembeli.',
+            'is_credential' => false
+        ]);
+        return back()->with('success', 'Refund disetujui. Dana dikembalikan ke pembeli.');
+    }
+
+    public function sellerRejectRefund(Request $request, Transaction $transaction)
+    {
+        $user = Auth::user();
+        // Pastikan user adalah seller
+        if ($transaction->seller_id !== $user->id) {
+            abort(403);
+        }
+        // Pastikan status disputed
+        if ($transaction->status !== 'disputed') {
+            return back()->with('error', 'Status transaksi tidak valid');
+        }
+        // Update transaksi, tetap disputed, bisa tambahkan catatan jika perlu
+        $transaction->messages()->create([
+            'user_id' => $user->id,
+            'message' => 'Penjual menolak refund. Silakan hubungi admin jika ada keberatan.',
+            'is_credential' => false
+        ]);
+        return back()->with('success', 'Refund ditolak. Silakan hubungi admin jika ada keberatan.');
     }
 } 
