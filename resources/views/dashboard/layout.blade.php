@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - Nexakun</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script>
         tailwind.config = {
@@ -38,45 +37,264 @@
         }
     </script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-        
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.05); }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
+/* Dashboard Custom Styles */
 
-        .sidebar-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.6, 1);
-        }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
 
-        .card-hover {
-            transition: all 0.3s ease;
-        }
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
 
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
 
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+/* Loading Animation */
+.loading-spinner {
+    border: 3px solid #1e293b;
+    border-top: 3px solid #8b5cf6;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Pulse Animation */
+.pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+    50% {
+        opacity: 0.8;
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+    }
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Card Hover Effects */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Button Animations */
+.btn-animate {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-animate::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-animate:hover::before {
+    left: 100%;
+}
+
+/* Sidebar Animation */
+.sidebar-item {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.sidebar-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+    transition: width 0.3s ease;
+}
+
+.sidebar-item:hover::before {
+    width: 4px;
+}
+
+/* Form Input Focus */
+.form-input:focus {
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    border-color: #8b5cf6;
+}
+
+/* Status Badge Animations */
+.status-badge {
+    animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Image Upload Area */
+.upload-area {
+    border: 2px dashed #475569;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #8b5cf6;
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+.upload-area.dragover {
+    border-color: #8b5cf6;
+    background-color: rgba(139, 92, 246, 0.1);
+    transform: scale(1.02);
+}
+
+/* Notification Toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    animation: slide-in-right 0.3s ease-out;
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Progress Bar */
+.progress-bar {
+    background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+    height: 4px;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Table Hover */
+.table-row {
+    transition: all 0.2s ease;
+}
+
+.table-row:hover {
+    background-color: rgba(139, 92, 246, 0.1);
+    transform: scale(1.01);
+}
+
+/* Modal Animation */
+.modal-overlay {
+    animation: fade-in 0.3s ease-out;
+}
+
+.modal-content {
+    animation: slide-up 0.3s ease-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+/* Dark Mode Enhancements */
+.dark {
+    color-scheme: dark;
+}
+
+/* Custom Focus Styles */
+.focus-ring:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #8b5cf6;
+    ring-offset: 2px;
+    ring-offset-color: #1e293b;
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
     </style>
 </head>
 <body class="bg-dark-900 text-gray-100 min-h-screen">

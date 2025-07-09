@@ -124,13 +124,34 @@ Route::middleware('auth')->group(function () {
 });
 
 // Public routes untuk melihat akun yang dijual
-Route::get('/accounts', function () {
-    $accounts = \App\Models\GameAccount::where('status', 'available')
-        ->with('user')
-        ->orderBy('created_at', 'desc')
-        ->paginate(12);
+Route::get('/accounts', function (\Illuminate\Http\Request $request) {
+    $query = \App\Models\GameAccount::where('status', 'available')->with('user');
     
-    return view('accounts.index', compact('accounts'));
+    // Filter nama game
+    if ($request->filled('game_name')) {
+        $query->where('game_name', $request->game_name);
+    }
+    // Filter level
+    if ($request->filled('account_level')) {
+        $query->where('account_level', 'like', '%' . $request->account_level . '%');
+    }
+    // Filter harga minimum
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+    // Filter harga maksimum
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+    // Filter judul akun
+    if ($request->filled('search')) {
+        $query->where('account_title', 'like', '%' . $request->search . '%');
+    }
+    $accounts = $query->orderBy('created_at', 'desc')->paginate(12)->appends($request->all());
+    
+    // Untuk dropdown game_name
+    $gameNames = \App\Models\GameAccount::select('game_name')->distinct()->pluck('game_name');
+    return view('accounts.index', compact('accounts', 'gameNames'));
 })->name('accounts.index');
 
 Route::get('/accounts/{gameAccount}', function (\App\Models\GameAccount $gameAccount) {
