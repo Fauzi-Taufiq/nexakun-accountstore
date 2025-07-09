@@ -8,6 +8,9 @@ use App\Http\Controllers\EscrowController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\TransactionMessageController;
 
+
+Route::get('/', fn() => 'Hello from Railway!');
+
 // Route untuk menampilkan halaman statis
 Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
