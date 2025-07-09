@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - Nexakun</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('js/dashboard.js') }}"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
