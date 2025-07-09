@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
+    ],
+
+    'midtrans' => [
+        'server_key' => env('MIDTRANS_SERVER_KEY', 'SB-Mid-server-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY', 'SB-Mid-client-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'merchant_id' => env('MIDTRANS_MERCHANT_ID', 'GXXXXXXXX'),
+    ],
+
 ];
